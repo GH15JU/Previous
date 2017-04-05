@@ -17,6 +17,7 @@ import calculotprototype.g14.cmpt276.calculot_prototype.WhatToDo;
 public class GameOverActivity extends AppCompatActivity {
 
     int GameType;
+    int vectorlvl = 1;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -25,6 +26,7 @@ public class GameOverActivity extends AppCompatActivity {
 
         int xpgained = getIntent().getIntExtra("xp",0);
         GameType = getIntent().getIntExtra("game",0);   //default is 0 -> gamediff, 1 -> vectorgameactivity
+        vectorlvl = getIntent().getIntExtra("vectorlvl",1);
         xpgained = xpgained / 2;
 
         TextView XPField = (TextView)findViewById(R.id.gameOverXP);
@@ -39,6 +41,7 @@ public class GameOverActivity extends AppCompatActivity {
         // Open database and store the XP into the database where username = _username
         UserDatabaseHelper userdb = new UserDatabaseHelper(getApplicationContext());
         userdb.addPracticeXP(myusername,xpgained);
+        userdb.editVectorLvl(myusername,vectorlvl);
 
         tryAgain.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -71,7 +74,13 @@ public class GameOverActivity extends AppCompatActivity {
     }
 
     private void goToGame() {
-        Intent initGame;
+        Intent initGame = null;
+
+        initGame.putExtra("Difficulty",1);    //Medium
+        initGame.putExtra("EasyLevel",1);
+        initGame.putExtra("MediumLevel",vectorlvl);
+        initGame.putExtra("HardLevel",1);
+
         if (GameType==0)
             initGame = new Intent(GameOverActivity.this,GameDiff.class);
         else initGame = new Intent(GameOverActivity.this,VectorGameActivity.class);

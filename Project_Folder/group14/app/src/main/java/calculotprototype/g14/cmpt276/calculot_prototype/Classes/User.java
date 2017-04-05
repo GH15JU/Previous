@@ -2,6 +2,8 @@ package calculotprototype.g14.cmpt276.calculot_prototype.Classes;
 
 import android.text.TextUtils;
 
+import calculotprototype.g14.cmpt276.calculot_prototype.VectorGame.VectorGameActivity;
+
 /**
  * Created by ephronax on 3/7/2017.
  */
@@ -15,6 +17,7 @@ public class User {
     private int TotalXP;
     private int LearningXP;
     private int PracticeXP;
+    private int VectorLvl = 1;
 
     final int avatarLevel1 = 0; //1st avatar at level 0
     final int avatarLevel2 = 5; //2nd avatar at level 5
@@ -31,15 +34,17 @@ public class User {
         TotalXP = 0;
         LearningXP = 0;
         PracticeXP = 0;
+        //VectorLvl = 1;
     }
 
-    public User(String _username, String _firstname, String _password, int _totalXP, int _learningXP, int _practiceXP) {
+    public User(String _username, String _firstname, String _password, int _totalXP, int _learningXP, int _practiceXP, int _vectorLevel) {
         username = _username;
         firstname= _firstname;
         password = _password;
         TotalXP = _totalXP;
         LearningXP = _learningXP;
         PracticeXP = _practiceXP;
+        VectorLvl = _vectorLevel;
     }
     // GET METHODS;
 
@@ -90,6 +95,10 @@ public class User {
         return 1;
     }
 
+    public int getVectorLvl() {
+        return VectorLvl;
+    }
+
     // SET METHODS:
 
     // SET USERNAME
@@ -130,13 +139,16 @@ public class User {
         PracticeXP = _PracticeXP;
     }
 
+    public void setVectorLvl(int _VectorLvl) {
+        VectorLvl += _VectorLvl;
+    }
+
 
     // OTHER FUNCTIONS;
 
     // Check the password if it contains at least 1 uppercase and 1 number
     private boolean checkPassword(String password) {
         // TO IMPLEMENT
-    //import needed
         if (    TextUtils.isEmpty(password)
             ||  !(password.matches(".*[0-9].*"))
             || !(password.matches(".*[A-Z].*")))return false;

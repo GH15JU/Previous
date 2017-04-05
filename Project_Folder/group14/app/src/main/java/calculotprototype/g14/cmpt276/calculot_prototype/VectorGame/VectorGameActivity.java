@@ -195,6 +195,7 @@ public class VectorGameActivity extends AppCompatActivity {
     private void goToGameOver() {
         gameOver.putExtra("xp", TotalGain*2);   //since gameoveractivity divides XP by 2
         gameOver.putExtra("game", 1);
+        gameOver.putExtra("vectorlvl", MediumLevel);
         Timer.cancel();
         finish();   //pop this activity off the stack
         startActivity(gameOver);

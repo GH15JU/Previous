@@ -13,6 +13,7 @@ import calculotprototype.g14.cmpt276.calculot_prototype.Databases.UserDatabaseHe
 
 
 public class MainActivity extends AppCompatActivity {
+
     //MainActivity will act as the splashscreen, as well as to load anything you need to do before main menu
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -33,6 +34,11 @@ public class MainActivity extends AppCompatActivity {
             public void onAnimationStart(Animation animation) {} //Don't delete, auto-generated
             public void onAnimationEnd(Animation animation) {
                 //Check if user is already logged in
+                //SharedPreferences preferences = getSharedPreferences("MyPref", 0);
+                //SharedPreferences.Editor editor = preferences.edit();
+                //editor.putString("username",null);
+                //editor.commit();
+
                 SharedPreferences pref = getApplicationContext().getSharedPreferences("MyPref",0);
                 String username = pref.getString("username",null); //Gets current logged in username from SharedPreferences
 

@@ -60,7 +60,7 @@ public class Profile extends MainActivity {
         //Sets TextView so user can see int of how much XP they have
         practiceXPTV.setText(practiceXPSt + " " + practiceXPoutOfSt);
         //Sets level TextView to the players level
-        levelTV.setText(levelSt + ": " + Integer.toString(user.getlevel()));
+        levelTV.setText(levelSt + ": " + Integer.toString(user.getlevel())+"\t VectorGameLvl: "+Integer.toString(user.getVectorLvl()));
 
         //Update PracticeXP Progress bar
         ProgressBar practiceXPPB = (ProgressBar) findViewById(R.id.profile_practiceXP_progress);

@@ -17,7 +17,7 @@ public class UserDatabaseHelper extends SQLiteOpenHelper {
 
     // DATABASE META INFORMATION
     private static final String DATABASE_NAME = "user.db";
-    private static final int DATABASE_VERSION = 1;
+    private static final int DATABASE_VERSION = 2;
 
     // TABLE META INFORMATION
     private static final String TABLE_NAME = "User_Information";
@@ -28,6 +28,7 @@ public class UserDatabaseHelper extends SQLiteOpenHelper {
     private static final String TABLE_TOTALXP = "Total_XP";
     private static final String TABLE_LEARNINGXP = "Learning_XP";
     private static final String TABLE_PRACTICEXP = "Practice_XP";
+    private static final String TABLE_VECTORLVL = "Vector_LVL";
 
     // onCreate statement
     private static final String STATEMENT = "CREATE TABLE " + TABLE_NAME + "(" +
@@ -38,6 +39,7 @@ public class UserDatabaseHelper extends SQLiteOpenHelper {
             TABLE_TOTALXP + " INTEGER NOT NULL," +
             TABLE_LEARNINGXP + " INTEGER NOT NULL," +
             TABLE_PRACTICEXP + " INTEGER NOT NULL" +
+            TABLE_VECTORLVL + " INTEGER NOT NULL" +
             ");";
 
 
@@ -70,6 +72,7 @@ public class UserDatabaseHelper extends SQLiteOpenHelper {
         cv.put(TABLE_TOTALXP, 0);
         cv.put(TABLE_LEARNINGXP, 0);
         cv.put(TABLE_PRACTICEXP, 0);
+        cv.put(TABLE_VECTORLVL, user.getVectorLvl());
 
         return db.insert(TABLE_NAME, null, cv);
 
@@ -106,7 +109,7 @@ public class UserDatabaseHelper extends SQLiteOpenHelper {
         // Initialize Database and Cursor
         SQLiteDatabase db = this.getReadableDatabase();
         Cursor cursor = db.rawQuery("SELECT " + TABLE_USERNAME + ", " + TABLE_FIRSTNAME + ", " + TABLE_PASSWORD + ", " +
-                TABLE_TOTALXP + ", " + TABLE_LEARNINGXP + ", " + TABLE_PRACTICEXP + " FROM " + TABLE_NAME, null);
+                TABLE_TOTALXP + ", " + TABLE_LEARNINGXP + ", " + TABLE_PRACTICEXP + ", " + TABLE_VECTORLVL + " FROM " + TABLE_NAME, null);
 
         if (cursor.moveToFirst()) {
             do {
@@ -119,7 +122,9 @@ public class UserDatabaseHelper extends SQLiteOpenHelper {
                             cursor.getString(2), //password
                             cursor.getInt(3), //totalXP
                             cursor.getInt(4), //learningXP
-                            cursor.getInt(5)); //practiceXP
+                            cursor.getInt(5), //practiceXP
+                            cursor.getInt(6)  //vectorlvl
+                    );
                     cursor.close();
                     return user;
                 }
@@ -149,14 +154,14 @@ public class UserDatabaseHelper extends SQLiteOpenHelper {
     }
 
     // EDITS XP VALUES TO THE PARAMETERS NEEDED -- TO TEST
-    public void editXP(int _TotalXP, int _PracticeXP, int _LearningXP, String _username) {
+    public void editXP(int _TotalXP, int _PracticeXP, int _LearningXP, int _VectorLvl, String _username) {
 
         SQLiteDatabase db = this.getWritableDatabase();
 
         // Query statement: UPDATE User-Information SET Total XP = _TotalXP , Learning XP = _LearningXP, Practice XP = _PracticeXP WHERE Username ='_username'
         db.execSQL("UPDATE " + TABLE_NAME + " SET " + TABLE_TOTALXP + " = " +
                                     _TotalXP + ", " + TABLE_LEARNINGXP + " = " + _LearningXP + ", " +
-                                    TABLE_PRACTICEXP + " = " + _PracticeXP + " WHERE " + TABLE_USERNAME + " ='" +
+                                    TABLE_PRACTICEXP + " = " + _PracticeXP + ", " + TABLE_VECTORLVL + " = " + _VectorLvl + " WHERE " + TABLE_USERNAME + " ='" +
                                     _username + "'");
 
     }
@@ -179,6 +184,20 @@ public class UserDatabaseHelper extends SQLiteOpenHelper {
         SQLiteDatabase db = this.getWritableDatabase();
         String QUERY = "UPDATE " + TABLE_NAME + " SET " + TABLE_TOTALXP + " = " + TABLE_TOTALXP + " + " + Integer.toString(xpgained) +
                 ", " + TABLE_PRACTICEXP + " = " + TABLE_PRACTICEXP + " + " + Integer.toString(xpgained) + " WHERE " + TABLE_USERNAME + " = "
+                + "'" +  _username + "';";
+
+        db.execSQL(QUERY);
+
+        db.close();
+
+    }
+
+    public void editVectorLvl(String _username,int _vectorlvl) {
+        // Query DB for _username.
+        // Write DB with username to add xpgained to practice XP and total XP - DONE;
+
+        SQLiteDatabase db = this.getWritableDatabase();
+        String QUERY = "UPDATE " + TABLE_NAME + " SET " + TABLE_VECTORLVL + " = " + Integer.toString(_vectorlvl) + " WHERE " + TABLE_USERNAME + " = "
                 + "'" +  _username + "';";
 
         db.execSQL(QUERY);
